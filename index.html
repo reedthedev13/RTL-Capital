@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RTL Capital Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#E8C84A;--gold-dim:rgba(232,200,74,0.12);--gold-border:rgba(232,200,74,0.2);
+  --bg:#080A0C;--bg2:#0E1114;--bg3:#141719;
+  --text:#EDE9E0;--text-dim:rgba(237,233,224,0.45);--text-muted:rgba(237,233,224,0.2);
+  --green:#3DD68C;--red:#F06A6A;--radius:6px;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(8,10,12,0.9);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--gold-border);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--gold);text-decoration:none;flex-shrink:0;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:400;letter-spacing:0.5px;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-cta{background:var(--gold);color:#080A0C;padding:0.5rem 1.25rem;border-radius:var(--radius);font-size:13px;font-weight:500;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;}
+.nav-cta:hover{opacity:0.85;}
+.nav-hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:4px;}
+.nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--text-dim);border-radius:1px;}
+.mobile-menu{display:none;position:fixed;inset:0;top:56px;background:var(--bg);z-index:99;padding:2rem 2.5rem;flex-direction:column;gap:1.5rem;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{color:var(--text);text-decoration:none;font-size:18px;font-weight:400;border-bottom:0.5px solid rgba(237,233,224,0.07);padding-bottom:1rem;}
+.mobile-menu .nav-cta{text-align:center;margin-top:0.5rem;color:#080A0C;border-bottom:none;}
+
+/* PAGE SYSTEM */
+.page{display:none;padding-top:58px;min-height:100vh;}
+.page.active{display:block;}
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(232,200,74,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(232,200,74,0.025) 1px,transparent 1px);background-size:48px 48px;}
+
+/* HERO */
+.hero{position:relative;z-index:1;padding:5rem 2.5rem 3rem;max-width:900px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2.5px;color:rgba(232,200,74,0.6);text-transform:uppercase;margin-bottom:1.75rem;}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2.2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.25;}}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,10vw,120px);line-height:0.92;letter-spacing:2px;color:var(--text);margin-bottom:1.25rem;}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero-sub{font-size:16px;font-weight:300;color:var(--text-dim);max-width:460px;line-height:1.7;margin-bottom:2rem;}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:#080A0C;border:none;padding:0.8rem 2rem;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;border-radius:var(--radius);cursor:pointer;transition:opacity 0.2s,transform 0.15s;text-decoration:none;display:inline-block;}
+.btn-gold:hover{opacity:0.88;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--text);border:0.5px solid rgba(237,233,224,0.2);padding:0.8rem 2rem;font-family:'Outfit',sans-serif;font-size:14px;font-weight:400;border-radius:var(--radius);cursor:pointer;transition:border-color 0.2s;text-decoration:none;display:inline-block;}
+.btn-ghost:hover{border-color:rgba(237,233,224,0.45);}
+
+/* TICKER */
+.ticker{position:relative;z-index:1;border-top:0.5px solid var(--gold-border);border-bottom:0.5px solid var(--gold-border);background:rgba(232,200,74,0.03);padding:0.65rem 0;overflow:hidden;margin:2.5rem 0 0;}
+.ticker-track{display:flex;gap:3rem;animation:tick 20s linear infinite;white-space:nowrap;}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.t-item{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;}
+.t-sym{color:var(--text-dim);}
+.t-price{color:var(--text);}
+.t-up{color:var(--green);}
+.t-dn{color:var(--red);}
+
+/* STATS */
+.stats-row{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);border:0.5px solid var(--gold-border);}
+.stat{padding:1.75rem 2rem;border-right:0.5px solid var(--gold-border);}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:1px;color:var(--gold);line-height:1;}
+.stat-label{font-size:12px;color:var(--text-dim);margin-top:4px;}
+
+/* PILLARS */
+.pillars-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(237,233,224,0.05);}
+.pillar{background:var(--bg);padding:1.75rem 2rem 2rem;}
+.p-num{font-family:'DM Mono',monospace;font-size:10px;color:rgba(232,200,74,0.35);letter-spacing:2px;margin-bottom:1rem;}
+.p-bar{width:28px;height:2px;background:var(--gold);margin-bottom:1rem;}
+.p-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);margin-bottom:0.5rem;line-height:1.2;}
+.p-desc{font-size:12px;color:var(--text-dim);line-height:1.65;}
+
+/* ABOUT */
+.about-hero{position:relative;z-index:1;padding:5rem 2.5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;max-width:1100px;}
+.about-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(232,200,74,0.5);text-transform:uppercase;margin-bottom:1.5rem;}
+.about-hero h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,64px);letter-spacing:2px;color:var(--text);line-height:0.95;margin-bottom:1.5rem;}
+.about-hero h2 em{color:var(--gold);font-style:normal;}
+.about-body{font-size:14px;color:var(--text-dim);line-height:1.8;}
+.about-body p{margin-bottom:1rem;}
+.founder-card{background:var(--bg2);border:0.5px solid var(--gold-border);border-radius:8px;padding:1.75rem;}
+.founder-initial{width:56px;height:56px;border-radius:50%;background:var(--gold-dim);border:0.5px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);margin-bottom:1rem;}
+.founder-name{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);margin-bottom:4px;}
+.founder-role{font-family:'DM Mono',monospace;font-size:10px;color:rgba(232,200,74,0.5);letter-spacing:1.5px;margin-bottom:1rem;}
+.founder-bio{font-size:13px;color:var(--text-dim);line-height:1.7;}
+.values-section{position:relative;z-index:1;padding:2rem 2.5rem 4rem;}
+.values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(237,233,224,0.05);margin-top:1.5rem;}
+.value-item{background:var(--bg);padding:1.5rem 1.75rem;}
+.value-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:5px;}
+.value-desc{font-size:12px;color:var(--text-dim);line-height:1.6;}
+
+/* CURRICULUM */
+.curr-header{position:relative;z-index:1;padding:5rem 2.5rem 2rem;}
+.curr-header h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,72px);letter-spacing:2px;color:var(--text);line-height:0.95;}
+.curr-header h2 em{color:var(--gold);font-style:normal;}
+.curr-header p{font-size:15px;color:var(--text-dim);max-width:500px;margin-top:0.85rem;}
+.courses-section{position:relative;z-index:1;padding:2rem 2.5rem 4rem;}
+.courses-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem;}
+.course-card{background:var(--bg2);border:0.5px solid rgba(237,233,224,0.07);border-radius:8px;padding:1.25rem;}
+.course-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--text-muted);margin-bottom:0.5rem;}
+.course-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;padding:2px 8px;border-radius:20px;margin-bottom:0.6rem;}
+.badge-gold{color:var(--gold);background:var(--gold-dim);border:0.5px solid var(--gold-border);}
+.badge-green{color:var(--green);background:rgba(61,214,140,0.1);border:0.5px solid rgba(61,214,140,0.2);}
+.badge-blue{color:#7B8BF7;background:rgba(88,101,242,0.1);border:0.5px solid rgba(88,101,242,0.2);}
+.badge-white{color:var(--text-dim);background:rgba(237,233,224,0.05);border:0.5px solid rgba(237,233,224,0.1);}
+.course-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);margin-bottom:0.4rem;line-height:1.2;}
+.course-desc{font-size:12px;color:var(--text-dim);line-height:1.55;}
+.wyg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(237,233,224,0.05);margin-top:2rem;}
+.wyg-item{background:var(--bg);padding:1.5rem;}
+.wyg-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px;}
+.wyg-desc{font-size:12px;color:var(--text-dim);line-height:1.55;}
+
+/* PRICING */
+.pricing-header{position:relative;z-index:1;padding:5rem 2.5rem 2rem;text-align:center;}
+.pricing-header h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,72px);letter-spacing:2px;color:var(--text);}
+.pricing-header h2 em{color:var(--gold);font-style:normal;}
+.pricing-header p{font-size:15px;color:var(--text-dim);max-width:440px;margin:0.75rem auto 0;}
+.toggle-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:1.75rem;}
+.toggle-label{font-size:13px;color:var(--text-dim);}
+.toggle-label.active{color:var(--text);}
+.toggle{width:48px;height:26px;background:var(--gold-dim);border:0.5px solid var(--gold-border);border-radius:13px;cursor:pointer;position:relative;}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--gold);transition:transform 0.2s;}
+.toggle.yearly .toggle-thumb{transform:translateX(22px);}
+.save-badge{font-family:'DM Mono',monospace;font-size:10px;color:var(--green);background:rgba(61,214,140,0.1);border:0.5px solid rgba(61,214,140,0.2);padding:2px 8px;border-radius:20px;margin-left:4px;}
+.plans-wrap{position:relative;z-index:1;padding:2rem 2.5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:820px;margin:0 auto;}
+.plan-card{background:var(--bg2);border:0.5px solid rgba(237,233,224,0.08);border-radius:10px;padding:2rem;position:relative;overflow:hidden;}
+.plan-card.featured{border-color:var(--gold-border);background:var(--bg3);}
+.featured-tag{position:absolute;top:0;right:0;background:var(--gold);color:#080A0C;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;padding:5px 14px;border-radius:0 10px 0 8px;}
+.plan-name{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(232,200,74,0.6);margin-bottom:1rem;}
+.plan-price{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--text);line-height:1;}
+.plan-price span{font-family:'Outfit',sans-serif;font-size:15px;font-weight:300;color:var(--text-dim);}
+.plan-save{font-size:13px;color:var(--green);margin-top:4px;min-height:20px;}
+.plan-divider{height:0.5px;background:rgba(237,233,224,0.08);margin:1.25rem 0;}
+.plan-features{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem;}
+.feat{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-dim);}
+.feat-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.plan-btn{display:block;text-align:center;background:var(--gold);color:#080A0C;padding:0.8rem;border-radius:var(--radius);font-size:14px;font-weight:500;text-decoration:none;cursor:pointer;border:none;width:100%;font-family:'Outfit',sans-serif;transition:opacity 0.2s;}
+.plan-btn:hover{opacity:0.85;}
+.plan-btn.ghost{background:transparent;color:var(--text);border:0.5px solid rgba(237,233,224,0.2);}
+.plan-btn.ghost:hover{border-color:rgba(237,233,224,0.4);}
+.faq-section{position:relative;z-index:1;padding:0 2.5rem 4rem;max-width:700px;margin:0 auto;}
+.faq-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(232,200,74,0.5);text-transform:uppercase;margin-bottom:1.5rem;}
+.faq-item{border-bottom:0.5px solid rgba(237,233,224,0.07);padding:1.1rem 0;}
+.faq-q{font-size:14px;font-weight:400;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+.faq-a{font-size:13px;color:var(--text-dim);line-height:1.7;max-height:0;overflow:hidden;transition:max-height 0.3s,margin-top 0.3s;}
+.faq-item.open .faq-a{max-height:200px;margin-top:0.75rem;}
+.faq-arrow{transition:transform 0.3s;color:var(--gold);font-size:16px;flex-shrink:0;}
+.faq-item.open .faq-arrow{transform:rotate(45deg);}
+
+/* CONTACT */
+.contact-wrap{position:relative;z-index:1;padding:5rem 2.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1000px;align-items:start;}
+.contact-left h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,64px);letter-spacing:2px;color:var(--text);line-height:0.95;margin-bottom:1.25rem;}
+.contact-left h2 em{color:var(--gold);font-style:normal;}
+.contact-left p{font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:2rem;}
+.contact-links{display:flex;flex-direction:column;gap:12px;}
+.contact-link{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text-dim);text-decoration:none;transition:color 0.2s;}
+.contact-link:hover{color:var(--text);}
+.contact-link-icon{width:36px;height:36px;background:var(--gold-dim);border:0.5px solid var(--gold-border);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.form-card{background:var(--bg2);border:0.5px solid rgba(237,233,224,0.08);border-radius:10px;padding:1.75rem;}
+.form-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(232,200,74,0.5);text-transform:uppercase;margin-bottom:1.25rem;display:block;}
+.field{margin-bottom:0.9rem;}
+.field label{display:block;font-size:12px;color:var(--text-dim);margin-bottom:5px;}
+.field input,.field textarea,.field select{width:100%;background:var(--bg3);border:0.5px solid rgba(237,233,224,0.1);border-radius:var(--radius);padding:0.65rem 0.85rem;color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;font-weight:300;outline:none;transition:border-color 0.2s;}
+.field input:focus,.field textarea:focus{border-color:rgba(232,200,74,0.4);}
+.field textarea{resize:vertical;min-height:90px;}
+.field select{appearance:none;}
+.submit-btn{width:100%;background:var(--gold);color:#080A0C;border:none;padding:0.85rem;border-radius:var(--radius);font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:opacity 0.2s;}
+.submit-btn:hover{opacity:0.85;}
+
+/* DISCLAIMER */
+.disclaimer-bar{position:relative;z-index:1;display:flex;align-items:flex-start;gap:12px;background:rgba(240,106,106,0.05);border-top:0.5px solid rgba(240,106,106,0.2);border-bottom:0.5px solid rgba(240,106,106,0.2);padding:1rem 2.5rem;}
+.disclaimer-icon{font-size:14px;flex-shrink:0;margin-top:2px;opacity:0.6;}
+.disclaimer-bar p{font-size:11px;color:var(--text-muted);line-height:1.6;}
+.disclaimer-bar p strong{color:rgba(237,233,224,0.35);font-weight:500;}
+.disclaimer-section{position:relative;z-index:1;padding:2rem 2.5rem;border-top:0.5px solid rgba(240,106,106,0.15);background:rgba(240,106,106,0.03);}
+.disclaimer-section-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(240,106,106,0.5);text-transform:uppercase;margin-bottom:1rem;}
+.disclaimer-section p{font-size:12px;color:var(--text-muted);line-height:1.7;max-width:800px;}
+.disclaimer-section p + p{margin-top:0.6rem;}
+
+/* SHARED */
+.divider{height:0.5px;background:var(--gold-border);position:relative;z-index:1;}
+.section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(232,200,74,0.5);text-transform:uppercase;margin-bottom:1.25rem;}
+footer{position:relative;z-index:1;border-top:0.5px solid var(--gold-border);padding:1.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:rgba(232,200,74,0.5);}
+.footer-copy{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:1px;}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:1rem 1.25rem;}
+  .nav-links{display:none;}
+  .nav-hamburger{display:flex;}
+  .hero{padding:4rem 1.25rem 2.5rem;}
+  .ticker{margin:2rem 0 0;}
+  .stats-row{grid-template-columns:1fr;}
+  .stat{border-right:none;border-bottom:0.5px solid var(--gold-border);padding:1.25rem 1.5rem;}
+  .stat:last-child{border-bottom:none;}
+  .pillars-grid{grid-template-columns:1fr;}
+  .about-hero{grid-template-columns:1fr;gap:2rem;padding:3rem 1.25rem 2rem;}
+  .values-section{padding:1.5rem 1.25rem 3rem;}
+  .values-grid{grid-template-columns:1fr;}
+  .curr-header{padding:3rem 1.25rem 1.5rem;}
+  .courses-section{padding:1.5rem 1.25rem 3rem;}
+  .courses-row{grid-template-columns:1fr;}
+  .wyg-grid{grid-template-columns:1fr;}
+  .pricing-header{padding:3rem 1.25rem 1.5rem;}
+  .plans-wrap{grid-template-columns:1fr;padding:1.5rem 1.25rem 2rem;}
+  .faq-section{padding:0 1.25rem 3rem;}
+  .contact-wrap{grid-template-columns:1fr;gap:2rem;padding:3rem 1.25rem 3rem;}
+  .disclaimer-bar{padding:1rem 1.25rem;}
+  .disclaimer-section{padding:1.5rem 1.25rem;}
+  footer{padding:1.25rem;}
+  .hero h1{font-size:clamp(48px,14vw,72px);}
+}
+@media(max-width:400px){
+  .hero{padding:3.5rem 1rem 2rem;}
+  .btn-row{flex-direction:column;}
+  .btn-gold,.btn-ghost{text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <a href="#" class="nav-logo" onclick="showPage('home')">RTL CAPITAL</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')">Home</a></li>
+    <li><a href="#" onclick="showPage('about')">About</a></li>
+    <li><a href="#" onclick="showPage('curriculum')">Curriculum</a></li>
+    <li><a href="#" onclick="showPage('pricing')">Pricing</a></li>
+    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="YOUR_WHOP_LINK" class="nav-cta">Join Now</a>
+    <button class="nav-hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#" onclick="showPage('home')">Home</a>
+  <a href="#" onclick="showPage('about')">About</a>
+  <a href="#" onclick="showPage('curriculum')">Curriculum</a>
+  <a href="#" onclick="showPage('pricing')">Pricing</a>
+  <a href="#" onclick="showPage('contact')">Contact</a>
+  <a href="YOUR_WHOP_LINK" class="nav-cta">Join Now</a>
+</div>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <section class="hero">
+    <div class="hero-eyebrow"><div class="pulse"></div>Now Enrolling — 2026</div>
+    <h1>LEARN TO<br>TRADE <em>STOCKS</em><br>THE RIGHT WAY.</h1>
+    <p class="hero-sub">RTL Capital Group teaches swing trading and day trading through real setups, video lessons, and a live Discord community — led by Reed.</p>
+    <div class="btn-row">
+      <a href="YOUR_WHOP_LINK" class="btn-gold">Join the Program</a>
+      <a href="#" class="btn-ghost" onclick="showPage('curriculum')">See the Curriculum</a>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <div class="ticker-track">
+      <div class="t-item"><span class="t-sym">AAPL</span><span class="t-price">187.42</span><span class="t-up">+1.34%</span></div>
+      <div class="t-item"><span class="t-sym">NVDA</span><span class="t-price">924.10</span><span class="t-up">+2.87%</span></div>
+      <div class="t-item"><span class="t-sym">TSLA</span><span class="t-price">248.60</span><span class="t-dn">-0.92%</span></div>
+      <div class="t-item"><span class="t-sym">SPY</span><span class="t-price">519.33</span><span class="t-up">+0.41%</span></div>
+      <div class="t-item"><span class="t-sym">MSFT</span><span class="t-price">418.77</span><span class="t-up">+0.65%</span></div>
+      <div class="t-item"><span class="t-sym">AMD</span><span class="t-price">162.40</span><span class="t-dn">-1.18%</span></div>
+      <div class="t-item"><span class="t-sym">META</span><span class="t-price">497.20</span><span class="t-up">+1.09%</span></div>
+      <div class="t-item"><span class="t-sym">GOOGL</span><span class="t-price">172.55</span><span class="t-up">+0.73%</span></div>
+      <div class="t-item"><span class="t-sym">AAPL</span><span class="t-price">187.42</span><span class="t-up">+1.34%</span></div>
+      <div class="t-item"><span class="t-sym">NVDA</span><span class="t-price">924.10</span><span class="t-up">+2.87%</span></div>
+      <div class="t-item"><span class="t-sym">TSLA</span><span class="t-price">248.60</span><span class="t-dn">-0.92%</span></div>
+      <div class="t-item"><span class="t-sym">SPY</span><span class="t-price">519.33</span><span class="t-up">+0.41%</span></div>
+      <div class="t-item"><span class="t-sym">MSFT</span><span class="t-price">418.77</span><span class="t-up">+0.65%</span></div>
+      <div class="t-item"><span class="t-sym">AMD</span><span class="t-price">162.40</span><span class="t-dn">-1.18%</span></div>
+      <div class="t-item"><span class="t-sym">META</span><span class="t-price">497.20</span><span class="t-up">+1.09%</span></div>
+      <div class="t-item"><span class="t-sym">GOOGL</span><span class="t-price">172.55</span><span class="t-up">+0.73%</span></div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Courses in the program</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Stocks & equities focused</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Discord community access</div></div>
+  </div>
+
+  <div class="pillars-grid" style="margin-top:1px;">
+    <div class="pillar">
+      <div class="p-num">01</div>
+      <div class="p-bar"></div>
+      <div class="p-title">Real setups,<br>real trades</div>
+      <p class="p-desc">Every lesson is grounded in live market examples — not textbook theory that doesn't translate.</p>
+    </div>
+    <div class="pillar">
+      <div class="p-num">02</div>
+      <div class="p-bar"></div>
+      <div class="p-title">Risk first,<br>always</div>
+      <p class="p-desc">Learn to protect your capital before chasing gains. Good trading starts with good risk management.</p>
+    </div>
+    <div class="pillar">
+      <div class="p-num">03</div>
+      <div class="p-bar"></div>
+      <div class="p-title">Community<br>& accountability</div>
+      <p class="p-desc">A Discord built around learning — watchlists, trade reviews, and people pushing each other forward.</p>
+    </div>
+  </div>
+
+  <div class="disclaimer-bar">
+    <div class="disclaimer-icon">⚠</div>
+    <p><strong>Risk Disclaimer:</strong> RTL Capital Group is an educational platform only. Reed is not a licensed financial advisor. Nothing on this site constitutes financial advice. Trading stocks involves substantial risk of loss. Most retail traders lose money. Only trade with capital you can afford to lose.</p>
+  </div>
+
+  <footer>
+    <div class="footer-logo">RTL CAPITAL GROUP</div>
+    <div class="footer-copy">© 2026 RTL Capital Group — All rights reserved</div>
+  </footer>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="page">
+  <div class="about-hero">
+    <div>
+      <div class="about-label">About RTL Capital Group</div>
+      <h2>BUILT FOR<br><em>REAL</em><br>TRADERS.</h2>
+      <div class="about-body">
+        <p>RTL Capital Group was created with one goal: give people a clear, no-fluff path to learning how to trade stocks. Whether you want to swing trade around your day job or day trade full-time, the program meets you where you are.</p>
+        <p>The lessons are video-based, structured around how the market actually moves — not how textbooks say it should. Every module is built around real setups, real decisions, and real outcomes.</p>
+        <p>The community lives on Discord, where members share watchlists, post trade reviews, ask questions, and hold each other accountable. Trading is isolating — this is built to change that.</p>
+      </div>
+    </div>
+    <div>
+      <div class="founder-card">
+        <div class="founder-initial">R</div>
+        <div class="founder-name">Reed</div>
+        <div class="founder-role">Founder — RTL Capital Group</div>
+        <div class="founder-bio">Reed started RTL Capital Group to share what he's learned through years of trading stocks — the setups that work, the mistakes that cost money, and the mindset that ties it all together. The program is built on the belief that good trading can be taught to anyone willing to put in the work.</div>
+      </div>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="values-section">
+    <div class="section-label">What we stand for</div>
+    <div class="values-grid">
+      <div class="value-item"><div class="value-title">Transparency over hype</div><div class="value-desc">No fake screenshots, no "I turned $500 into $50k" promises. Just honest trading education.</div></div>
+      <div class="value-item"><div class="value-title">Process over outcome</div><div class="value-desc">A losing trade with good process is better than a winning trade with a bad one. We teach the process.</div></div>
+      <div class="value-item"><div class="value-title">Simplicity over complexity</div><div class="value-desc">The best traders use simple systems. We cut out the noise and focus on what actually matters.</div></div>
+      <div class="value-item"><div class="value-title">Community over solo hustle</div><div class="value-desc">You'll improve faster with people around you. The Discord is a core part of what RTL Capital offers.</div></div>
+    </div>
+  </div>
+  <div class="disclaimer-section">
+    <div class="disclaimer-section-title">⚠ Important Disclaimer</div>
+    <p>RTL Capital Group is an educational platform only. Reed is not a licensed financial advisor, broker, or registered investment advisor. Nothing on this website, in the Discord server, or within any course content constitutes financial advice, investment advice, or a recommendation to buy or sell any security.</p>
+    <p>Trading stocks and financial instruments involves substantial risk of loss and is not appropriate for all investors. The majority of retail traders lose money. You should never trade with money you cannot afford to lose entirely. Past performance of any strategy, setup, or trade discussed is not indicative of future results.</p>
+    <p>All content is provided for educational and informational purposes only. Any trades shared by Reed are shared for educational commentary — not as buy or sell signals. Always conduct your own research and consult a qualified financial professional before making any investment decisions.</p>
+  </div>
+
+  <footer>
+    <div class="footer-logo">RTL CAPITAL GROUP</div>
+    <div class="footer-copy">© 2026 RTL Capital Group — All rights reserved</div>
+  </footer>
+</div>
+
+<!-- CURRICULUM -->
+<div id="curriculum" class="page">
+  <div class="curr-header">
+    <div class="about-label">The Program</div>
+    <h2>SIX COURSES.<br><em>ONE SYSTEM.</em></h2>
+    <p>From complete beginner to live trading — every course is built around how Reed actually trades stocks.</p>
+  </div>
+  <div class="courses-section">
+    <div class="section-label">All courses</div>
+    <div class="courses-row">
+      <div class="course-card">
+        <div class="course-num">Course 01</div>
+        <div class="course-badge badge-blue">Foundations</div>
+        <div class="course-name">Trading 101</div>
+        <div class="course-desc">Start here. The stock market, how to read a chart, key terms, brokers, and placing your first trade.</div>
+      </div>
+      <div class="course-card">
+        <div class="course-num">Course 02</div>
+        <div class="course-badge badge-gold">Required</div>
+        <div class="course-name">Risk Management 101</div>
+        <div class="course-desc">Position sizing, stop losses, daily loss limits, and R:R ratios. The most important course in the program.</div>
+      </div>
+      <div class="course-card">
+        <div class="course-num">Course 03</div>
+        <div class="course-badge badge-gold">Core</div>
+        <div class="course-name">Day Trading Course</div>
+        <div class="course-desc">Stocks in play, the RTL RVOL scan, higher timeframe context, SIP setups long & short, and execution.</div>
+      </div>
+    </div>
+    <div class="courses-row" style="margin-top:1rem;">
+      <div class="course-card">
+        <div class="course-num">Course 04</div>
+        <div class="course-badge badge-green">Core</div>
+        <div class="course-name">Swing Trading Course</div>
+        <div class="course-desc">Catalyst-driven swings, breakout setups, entries and stops, managing multi-day holds, and weekly routine.</div>
+      </div>
+      <div class="course-card">
+        <div class="course-num">Course 05</div>
+        <div class="course-badge badge-green">Advanced</div>
+        <div class="course-name">Growing Your Account</div>
+        <div class="course-desc">When to scale up, compounding correctly, tracking performance, and handling drawdowns.</div>
+      </div>
+      <div class="course-card">
+        <div class="course-num">Course 06</div>
+        <div class="course-badge badge-white">Ongoing</div>
+        <div class="course-name">Live Trading Archives</div>
+        <div class="course-desc">Reed's live day trading sessions archived for members. Real trades, real decisions, real commentary.</div>
+      </div>
+    </div>
+    <div class="wyg-grid">
+      <div class="wyg-item"><div class="wyg-title">Video lessons</div><div class="wyg-desc">Pre-recorded modules you watch at your own pace, revisit anytime.</div></div>
+      <div class="wyg-item"><div class="wyg-title">Discord access</div><div class="wyg-desc">Live community, daily watchlists, trade alerts, and Q&A with Reed.</div></div>
+      <div class="wyg-item"><div class="wyg-title">Trade reviews</div><div class="wyg-desc">Real trades broken down — what worked, what didn't, and why.</div></div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">RTL CAPITAL GROUP</div>
+    <div class="footer-copy">© 2026 RTL Capital Group — All rights reserved</div>
+  </footer>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" class="page">
+  <div class="pricing-header">
+    <div class="about-label" style="display:inline-block;">Pricing</div>
+    <h2>SIMPLE.<br><em>TRANSPARENT.</em></h2>
+    <p>One program, two ways to pay. Everything included — no upsells, no hidden tiers.</p>
+    <div class="toggle-wrap">
+      <span class="toggle-label active" id="monthly-label">Monthly</span>
+      <div class="toggle" id="billing-toggle" onclick="toggleBilling()"><div class="toggle-thumb"></div></div>
+      <span class="toggle-label" id="yearly-label">Yearly <span class="save-badge">Save $400</span></span>
+    </div>
+  </div>
+  <div class="plans-wrap">
+    <div class="plan-card">
+      <div class="plan-name">Monthly</div>
+      <div class="plan-price">$100 <span>/ month</span></div>
+      <div class="plan-save">&nbsp;</div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="feat"><div class="feat-dot"></div>All 6 courses — full access</div>
+        <div class="feat"><div class="feat-dot"></div>Discord community access</div>
+        <div class="feat"><div class="feat-dot"></div>Daily watchlists from Reed</div>
+        <div class="feat"><div class="feat-dot"></div>Live trading archives</div>
+        <div class="feat"><div class="feat-dot"></div>Trade reviews & breakdowns</div>
+        <div class="feat"><div class="feat-dot"></div>Cancel anytime</div>
+      </div>
+      <a href="YOUR_WHOP_LINK" class="plan-btn ghost">Get monthly access</a>
+    </div>
+    <div class="plan-card featured">
+      <div class="featured-tag">Best value</div>
+      <div class="plan-name">Yearly</div>
+      <div class="plan-price">$800 <span>/ year</span></div>
+      <div class="plan-save" style="color:var(--green);">Save $400 vs monthly</div>
+      <div class="plan-divider"></div>
+      <div class="plan-features">
+        <div class="feat"><div class="feat-dot"></div>Everything in monthly</div>
+        <div class="feat"><div class="feat-dot"></div>12 months for the price of 8</div>
+        <div class="feat"><div class="feat-dot"></div>Priority Discord access</div>
+        <div class="feat"><div class="feat-dot"></div>First access to new content</div>
+        <div class="feat"><div class="feat-dot"></div>Locked-in rate as program grows</div>
+      </div>
+      <a href="YOUR_WHOP_LINK" class="plan-btn">Get yearly access</a>
+    </div>
+  </div>
+  <div class="faq-section">
+    <div class="faq-label">Common questions</div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do I need trading experience to join? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">No. Trading 101 starts from zero — what a stock is, how to read a chart, everything. You can join with no experience and follow the courses in order.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How does access work after I pay? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">After checkout on Whop, you'll get instant access to the Discord server and all video content. Everything is available immediately.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I cancel my monthly subscription? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">Yes — monthly members can cancel anytime through Whop. No questions asked. Yearly members keep access for the full 12 months regardless.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What broker do I need? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">The curriculum is broker-agnostic. Popular choices include Webull, thinkorswim (TD Ameritrade), and Interactive Brokers — but you can follow along with whatever you use.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is this a signal service? <span class="faq-arrow">+</span></div>
+      <div class="faq-a">No. RTL Capital Group is an education program. The goal is to teach you how to find and execute your own trades. Reed shares his trades for educational purposes, not as financial advice.</div>
+    </div>
+  </div>
+  <div class="disclaimer-bar">
+    <div class="disclaimer-icon">⚠</div>
+    <p><strong>Educational content only.</strong> RTL Capital Group does not provide financial advice. Trading stocks carries significant risk of loss. Most retail traders lose money. Results are not guaranteed. Reed is not a licensed financial advisor.</p>
+  </div>
+
+  <footer>
+    <div class="footer-logo">RTL CAPITAL GROUP</div>
+    <div class="footer-copy">© 2026 RTL Capital Group — All rights reserved</div>
+  </footer>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="page">
+  <div class="contact-wrap">
+    <div class="contact-left">
+      <div class="about-label">Get in touch</div>
+      <h2>GOT A<br><em>QUESTION?</em></h2>
+      <p>Whether you want to know if the program is right for you, have a question about pricing, or just want to connect — reach out. Reed reads every message.</p>
+      <div class="contact-links">
+        <a href="YOUR_WHOP_LINK" class="contact-link">
+          <div class="contact-link-icon">W</div>Join on Whop
+        </a>
+        <a href="YOUR_DISCORD_INVITE" class="contact-link">
+          <div class="contact-link-icon" style="background:rgba(88,101,242,0.15);border-color:rgba(88,101,242,0.3);">
+            <svg width="16" height="13" viewBox="0 0 20 16" fill="#5865F2"><path d="M16.93 1.33A16.47 16.47 0 0 0 12.86 0c-.18.33-.4.77-.54 1.12a15.25 15.25 0 0 0-4.64 0A11.6 11.6 0 0 0 7.14 0a16.52 16.52 0 0 0-4.07 1.33A17.4 17.4 0 0 0 0 13.08a16.6 16.6 0 0 0 5.07 2.58c.41-.56.77-1.16 1.08-1.79a10.76 10.76 0 0 1-1.7-.82c.14-.1.28-.21.41-.32a11.81 11.81 0 0 0 10.28 0c.13.11.27.22.41.32-.54.32-1.11.59-1.71.82.31.63.67 1.23 1.08 1.79A16.56 16.56 0 0 0 20 13.08 17.36 17.36 0 0 0 16.93 1.33ZM6.68 10.7c-1 0-1.82-.93-1.82-2.07s.8-2.07 1.82-2.07c1.01 0 1.84.93 1.82 2.07 0 1.14-.81 2.07-1.82 2.07Zm6.64 0c-1 0-1.82-.93-1.82-2.07s.8-2.07 1.82-2.07c1.01 0 1.84.93 1.82 2.07 0 1.14-.8 2.07-1.82 2.07Z"/></svg>
+          </div>Join the Discord
+        </a>
+      </div>
+    </div>
+    <div class="form-card">
+      <span class="form-label">Send a message</span>
+      <div class="field"><label>Your name</label><input type="text" placeholder="First name"/></div>
+      <div class="field"><label>Email address</label><input type="email" placeholder="you@example.com"/></div>
+      <div class="field"><label>What's your question about?</label>
+        <select>
+          <option>The program & curriculum</option>
+          <option>Pricing & billing</option>
+          <option>Discord access</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field"><label>Message</label><textarea placeholder="Ask anything..."></textarea></div>
+      <button class="submit-btn">Send message</button>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">RTL CAPITAL GROUP</div>
+    <div class="footer-copy">© 2026 RTL Capital Group — All rights reserved</div>
+  </footer>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function toggleMenu(){
+  const menu=document.getElementById('mobile-menu');
+  menu.classList.toggle('open');
+  document.body.style.overflow=menu.classList.contains('open')?'hidden':'';
+}
+function toggleFaq(el){
+  el.parentElement.classList.toggle('open');
+}
+let yearly=false;
+function toggleBilling(){
+  yearly=!yearly;
+  document.getElementById('billing-toggle').classList.toggle('yearly',yearly);
+  document.getElementById('monthly-label').classList.toggle('active',!yearly);
+  document.getElementById('yearly-label').classList.toggle('active',yearly);
+}
+</script>
+</body>
+</html>
